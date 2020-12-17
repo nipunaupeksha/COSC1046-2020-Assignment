@@ -19,7 +19,7 @@ public class Course {
     public Course(){}
     
     /*Parameterized Constructor*/
-    public Course(String courseName, double courseCredit, String []games, String courseId){
+    public Course(String courseId,String courseName, double courseCredit, String []games ){
         this.courseName = courseName;
         this.courseCredit = courseCredit;
         this.games = games;

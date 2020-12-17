@@ -16,16 +16,18 @@ public class User {
     private String userName;
     private String password;
     private HashMap<String, String> courses;
+    private HashMap<String,Integer> gameCount;
     
     /*Default constructor*/
     public User(){}
     
     /*Parameterized Constructor*/
-    public User(String studentName,String username, String password, HashMap<String, String> courses){
+    public User(String studentName,String username, String password, HashMap<String, String> courses, HashMap<String,Integer>gameCount){
         this.studentName = studentName;
         this.userName = username;
         this.password = password;
         this.courses = courses;
+        this.gameCount = gameCount;
     }
 
     /**
@@ -82,6 +84,20 @@ public class User {
      */
     public void setStudentName(String studentName) {
         this.studentName = studentName;
+    }
+
+    /**
+     * @return the gameCount
+     */
+    public HashMap<String,Integer> getGameCount() {
+        return gameCount;
+    }
+
+    /**
+     * @param gameCount the gameCount to set
+     */
+    public void setGameCount(HashMap<String,Integer> gameCount) {
+        this.gameCount = gameCount;
     }
     
 }
