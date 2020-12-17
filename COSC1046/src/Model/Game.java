@@ -10,16 +10,20 @@ package Model;
  * @author Nipuna
  */
 public class Game {
+
     private String gameName;
     private String gameIndex;
-    
+    private String gameAnswer;
+
     /*Default constructor*/
-    public Game(){}
-    
+    public Game() {
+    }
+
     /*Parameterized Constructor*/
-    public Game(String gameIndex,String gameName){
+    public Game(String gameIndex, String gameName, String gameAnswer) {
         this.gameName = gameName;
         this.gameIndex = gameIndex;
+        this.gameAnswer = gameAnswer;
     }
 
     /**
@@ -48,5 +52,19 @@ public class Game {
      */
     public void setGameIndex(String gameIndex) {
         this.gameIndex = gameIndex;
+    }
+
+    /**
+     * @return the gameAnswer
+     */
+    public String getGameAnswer() {
+        return gameAnswer;
+    }
+
+    /**
+     * @param gameAnswer the gameAnswer to set
+     */
+    public void setGameAnswer(String gameAnswer) {
+        this.gameAnswer = gameAnswer;
     }
 }
