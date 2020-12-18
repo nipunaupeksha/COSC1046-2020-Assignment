@@ -11,8 +11,8 @@ package Model;
  */
 public class Game {
 
-    private String gameName;
     private String gameIndex;
+    private String gameName;
     private String gameAnswer;
 
     /*Default constructor*/
