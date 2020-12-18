@@ -52,11 +52,11 @@ public class Program {
         * Finally you can let student's play games
          */
  /*Lets initialize the games*/
-        System.out.println("Input games (to exit press 'n')");
+        System.out.println("Input games (to exit press 'n'): ");
         System.out.println("------------------------------------");
         String gameVal = "";
         while (!gameVal.equalsIgnoreCase("n")) {
-            System.out.print("Do you want to add a Game? (y/n)");
+            System.out.print("Do you want to add a Game? (y/n): ");
             gameVal = input.nextLine();
 
             if (gameVal.equalsIgnoreCase("y")) {
@@ -75,11 +75,11 @@ public class Program {
 
         /*Initialization of courses*/
         System.out.println("");
-        System.out.println("Input courses (to exit press 'n')");
+        System.out.println("Input courses (to exit press 'n'): ");
         System.out.println("------------------------------------");
         String courseVal = "";
         while (!courseVal.equalsIgnoreCase("n")) {
-            System.out.print("Do you want to add a course? (y/n)");
+            System.out.print("Do you want to add a course? (y/n): ");
             courseVal = input.nextLine();
 
             boolean gamesAvailable = program.gameArray.size() != 0;
@@ -120,7 +120,7 @@ public class Program {
 
         /*Initialization of student details*/
         System.out.println("");
-        System.out.println("Input student details (to exit press 'n')");
+        System.out.println("Input student details (to exit press 'n'): ");
         System.out.println("------------------------------------");
         String userVal = "";
         while (!userVal.equalsIgnoreCase("n")) {
@@ -136,7 +136,7 @@ public class Program {
 
             TextTable courseTable = new TextTable(courseColumns, courseData);
 
-            System.out.print("Do you want to add a Student? (y/n)");
+            System.out.print("Do you want to add a Student? (y/n): ");
             userVal = input.nextLine();
 
             if (userVal.equalsIgnoreCase("y")) {
@@ -169,11 +169,14 @@ public class Program {
         System.out.println("--------------------------");
         String gamingVal = "";
         while (!gamingVal.equalsIgnoreCase("n")) {
-            System.out.print("Do you want to start a game? (y/n) ");
+            System.out.print("Do you want to start a game? (y/n): ");
             gamingVal = input.nextLine();
             if (gamingVal.equalsIgnoreCase("y")) {
                 System.out.print("Input username: ");
                 String username = input.nextLine();
+
+                System.out.print("Input password: ");
+                String password = input.nextLine();
 
                 String columnNames[] = {"Course ID", "Course Name", "Course Grade", "Course Games", "Game Ids"};
                 ArrayList<String> studentCourses = new ArrayList<>();
@@ -184,7 +187,7 @@ public class Program {
                 ArrayList<Integer> gameCount = new ArrayList<>();
                  */
                 for (int i = 0; i < program.userArray.size(); i++) {
-                    if (program.userArray.get(i).getUserName().equals(username)) {
+                    if (program.userArray.get(i).getUserName().equals(username) && program.userArray.get(i).getPassword().equals(password)) {
                         User user = program.userArray.get(i);
                         HashMap<String, String> courseMap = user.getCourses();
 
@@ -198,18 +201,20 @@ public class Program {
                             gameKeys.add(s);
                             gameCount.add(gameC.get(s));
                         }*/
+                    } else {
+                        System.out.println("Your username or password is incorrect");
                     }
                 }
 
                 Object data[][] = new Object[studentCourses.size()][5];
 
                 for (int i = 0; i < studentCourses.size(); i++) {
-                    data[i][1] = studentCourses.get(i);
+                    data[i][0] = studentCourses.get(i);
                     data[i][2] = studentCredits.get(i);
                     for (int j = 0; j < program.coursesArray.size(); j++) {
                         Course course = program.coursesArray.get(i);
                         if (course.getCourseId().equals(studentCourses.get(i))) {
-                            data[i][0] = course.getCourseName();
+                            data[i][1] = course.getCourseName();
                             String gameIdArray[] = course.getGames();
                             String gIDs = "";
                             ArrayList<String> gameNames = new ArrayList<>();
@@ -240,7 +245,7 @@ public class Program {
                 System.out.print("Input course: ");
                 String course = input.nextLine();
 
-                System.out.print("Input game you are going to play(Input game Id)");
+                System.out.print("Input game you are going to play(Input game Id): ");
                 String game = input.nextLine();
 
                 System.out.print("Input game answer: ");
@@ -251,11 +256,43 @@ public class Program {
                     if (g.getGameIndex().equalsIgnoreCase(game)) {
                         boolean compareAnswer = g.getGameAnswer().equalsIgnoreCase(gameAnswer);
                         for (int j = 0; j < program.userArray.size(); j++) {
-                            if (program.userArray.get(j).getUserName().equals(username)) {
+                            if (program.userArray.get(j).getUserName().equals(username) && program.userArray.get(i).getPassword().equals(password)) {
                                 User u = program.userArray.get(j);
                                 for (int k = 0; k < program.coursesArray.size(); k++) {
-                                    if(program.coursesArray.get(k).getCourseId().equalsIgnoreCase(course)){
+                                    if (program.coursesArray.get(k).getCourseId().equalsIgnoreCase(course)) {
                                         Course c = program.coursesArray.get(k);
+                                        HashMap<String, Integer> gameDetails = u.getGameCount();
+                                        String key = c.getCourseId(); //game + " " +c.getCourseId()
+                                        boolean isHashMap = gameDetails.containsKey(key);
+                                        if (isHashMap) {
+                                            int temp = gameDetails.get(key);
+                                            if (temp != 3) {
+                                                gameDetails.put(key, temp + 1);
+                                                if (compareAnswer) {
+                                                    System.out.println("Your asnwer is correct");
+                                                    double grade = Double.parseDouble(u.getCourses().get(key)) * (1.01);
+                                                    HashMap<String, String> updatedCourse = u.getCourses();
+                                                    updatedCourse.put(key, Double.toString(grade));
+                                                    u.setCourses(updatedCourse);
+                                                } else {
+                                                    System.out.println("Your answer is incorrect");
+                                                }
+                                            } else {
+                                                System.out.println("You have already played this game three times");
+                                            }
+                                        } else {
+                                            gameDetails.put(key, 1);
+                                            if (compareAnswer) {
+                                                System.out.println("Your asnwer is correct");
+                                                double grade = Double.parseDouble(u.getCourses().get(key)) * (1.01);
+                                                HashMap<String, String> updatedCourse = u.getCourses();
+                                                updatedCourse.put(key, Double.toString(grade));
+                                                u.setCourses(updatedCourse);
+                                            } else {
+                                                System.out.println("Your answer is incorrect");
+                                            }
+                                        }
+                                        u.setGameCount(gameDetails);
                                     }
                                 }
 
@@ -263,6 +300,8 @@ public class Program {
                         }
                     }
                 }
+                
+                
             }
         }
 
